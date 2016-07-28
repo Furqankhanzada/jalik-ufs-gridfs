@@ -28,7 +28,13 @@ UploadFS.store.GridFS = function (options) {
 
     if (Meteor.isServer) {
         var mongo = Package.mongo.MongoInternals.NpmModule;
-        var db = Package.mongo.MongoInternals.defaultRemoteCollectionDriver().mongo.db;
+        var db;
+
+        if(options.mongoUrl){
+            db = new Package.mongo.MongoInternals.RemoteCollectionDriver(options.mongoUrl).mongo.db;
+        }else{
+            db = Package.mongo.MongoInternals.defaultRemoteCollectionDriver().mongo.db
+        }
 
         mongoStore = new Grid(db, mongo);
 
